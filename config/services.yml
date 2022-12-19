@@ -1,0 +1,78 @@
+services:
+  _defaults:
+    public: true
+
+  # Form types
+  prestashop.module.softoneerp_block.form_type:
+    class: 'PrestaShop\Module\SoftOneERP\Form\Type\SoftOneERPBlockType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+      $translator: '@translator'
+      $locales: '@=service("prestashop.adapter.legacy.context").getLanguages(true, service("prestashop.adapter.shop.context").getContextShopID())'
+    tags:
+      - { name: form.type }
+
+  # Form handler
+  prestashop.module.softoneerp_block.form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\FormHandler'
+    arguments:
+      $formBuilder: '@=service("form.factory").createBuilder()'
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+      $formDataProvider: '@prestashop.module.softoneerp_block.form_provider'
+      $formTypes:
+        'softoneerp_block': 'PrestaShop\Module\SoftOneERP\Form\Type\SoftOneERPBlockType'
+      $hookName: 'AdminSoftOneERP'
+
+  # Form data provider
+  prestashop.module.softoneerp_block.form_provider:
+    class: 'PrestaShop\Module\SoftOneERP\Form\SoftOneERPFormDataProvider'
+    arguments:
+      $languages: '@=service("prestashop.adapter.legacy.context").getLanguages(true, service("prestashop.adapter.shop.context").getContextShopID())'
+      $shopId: '@=service("prestashop.adapter.shop.context").getContextShopID()'
+
+  # Client http
+  prestashop.module.softoneerp_classes.client:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\ClientSoftOneERP'
+    arguments:
+      $container: 'PrestaShop\Module\SoftOneERP\Interfaces\SoftOneErpClientInterface'
+
+  # Category
+  prestashop.module.softoneerp_classes.client.category:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\CategorySoftOneERP'
+
+  # Product
+  prestashop.module.softoneerp_classes.client.product:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\ProductSoftOneERP'
+
+  # Stocks
+  prestashop.module.softoneerp_classes.client.stock:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\StockSoftOneERP'
+
+  # Orders
+  prestashop.module.softoneerp_classes.client.order:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\OrderSoftOneERP'
+
+  # OrderStatuses
+  prestashop.module.softoneerp_classes.client.order_status:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\OrderStatusSoftOneERP'
+
+  # Customers
+  prestashop.module.softoneerp_classes.client.customer:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\CustomerSoftOneERP'
+
+  # SKU
+  prestashop.module.softoneerp_classes.sku:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\SkuObject'
+
+  # Customer Object
+  prestashop.module.softoneerp_classes.customer_sended:
+    class: 'PrestaShop\Module\SoftOneERP\Classes\CustomerSendedObject'
+
+  # Console cron command
+  prestashop.module.softoneerp_command.cron:
+    class: 'PrestaShop\Module\SoftOneERP\Command\SoftoneerpCommand'
+    arguments:
+      - 'type'
+    tags:
+      - { name: 'console.command' }

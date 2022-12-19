@@ -1,0 +1,14 @@
+admin_softoneerp_block_form:
+  path: /softoneerp-widget/configuration
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\SoftOneERP\Controller\Admin\Improve\AdvancedParameters\AdminSoftOneERPController::formAction'
+    _legacy_controller: AdminSoftOneERP
+    _legacy_link: AdminSoftOneERP
+
+admin_softoneerp_block_save_process:
+  path: /softoneerp-widget/configuration
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShop\Module\SoftOneERP\Controller\Admin\Improve\AdvancedParameters\AdminSoftOneERPController::saveProcessAction'
+    _legacy_controller: AdminSoftOneERP
